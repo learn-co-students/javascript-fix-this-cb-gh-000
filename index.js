@@ -22,18 +22,16 @@ const pie = {
   bakeTime: '75 minutes',
   customer: 'Tammy',
 };
-// add code here to decide which make... function to call
-// based on which link was clicked
-// you shouldn't need to alter this function
-function makeCake() {
-  let updateCakeStatus;
 
-  mix.call(updateCakeStatus);
+function makeCake() {
+  let updateCakeStatus = updateStatus.bind(this);
+  mix.call(cake, updateCakeStatus);
 }
 
 function makePie() {
-  let updatePieStatus;
-  mix(updatePieStatus);
+  let updatePieStatus = updateStatus.bind(this);
+  pie.decorate = cake.decorate.bind(pie);
+  mix.call(pie, updatePieStatus);
 }
 
 function updateStatus(statusText) {
@@ -66,6 +64,13 @@ function cool(updateFunction) {
 }
 
 function makeDessert() {
+  if (this.id === 'make-cake') {
+    const cakeNode = document.getElementById('cake');
+    makeCake.call(cakeNode);
+  } else if (this.id === 'make-pie') {
+    const pieNode = document.getElementById('pie');
+    makePie.call(pieNode);
+  }
 }
 
 function serve(message, customer) {
