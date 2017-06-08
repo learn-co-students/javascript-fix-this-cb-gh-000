@@ -1,49 +1,3 @@
-function makeCake() {
-  let updateCakeStatus;
-  mix(updateCakeStatus);
-}
-
-function makePie() {
-  let updatePieStatus;
-  mix(updatePieStatus);
-}
-
-function updateStatus(statusText) {
-  this.getElementsByClassName('status')[0].innerText = statusText;
-}
-
-function bake(updateFunction) {
-  const status = `Baking at ${this.bakeTemp} for ${this.bakeTime}`;
-  setTimeout(() => {
-    cool(updateFunction);
-  }, 2000);
-}
-
-function mix(updateFunction) {
-  const status = `Mixing ${this.ingredients.join(', ')}`;
-  setTimeout(() => {
-    bake(updateFunction);
-  }, 2000);
-  updateFunction(status);
-}
-
-function cool(updateFunction) {
-  const status = 'It has to cool! Hands off!';
-  setTimeout(function () {
-    this.decorate(updateFunction);
-  }, 2000);
-}
-
-function makeDessert() {
-  // add code here to decide which make... function to call
-  // based on which link was clicked
-}
-
-function serve(message, customer) {
-  // you shouldn't need to alter this function
-  return (`${customer}, your ${this.name} is ready to eat! ${message}`);
-}
-
 const cake = {
   name: 'German Chocolate Cake',
   ingredients: ['eggs', 'flour', 'oil', 'chocolate', 'sugar', 'butter'],
@@ -68,6 +22,54 @@ const pie = {
   bakeTime: '75 minutes',
   customer: 'Tammy',
 };
+// add code here to decide which make... function to call
+// based on which link was clicked
+// you shouldn't need to alter this function
+function makeCake() {
+  let updateCakeStatus;
+
+  mix.call(updateCakeStatus);
+}
+
+function makePie() {
+  let updatePieStatus;
+  mix(updatePieStatus);
+}
+
+function updateStatus(statusText) {
+  this.getElementsByClassName('status')[0].innerText = statusText;
+}
+
+function bake(updateFunction) {
+  const status = `Baking at ${this.bakeTemp} for ${this.bakeTime}`;
+  updateFunction(status);
+  setTimeout(() => {
+    cool.call(this, updateFunction);
+  }, 2000);
+}
+
+function mix(updateFunction) {
+  const status = `Mixing ${this.ingredients.join(', ')}`;
+  setTimeout(() => {
+    bake(updateFunction);
+  }, 2000);
+  updateFunction(status);
+}
+
+function cool(updateFunction) {
+  const status = 'It has to cool! Hands off!';
+  setTimeout(() => {
+    this.decorate(updateFunction);
+  }, 2000);
+}
+
+function makeDessert() {
+}
+
+function serve(message, customer) {
+  return (`${customer}, your ${this.name} is ready to eat! ${message}`);
+}
+
 
 document.addEventListener('DOMContentLoaded', (event) => {
   // you shouldn't need to alter this function
