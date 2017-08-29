@@ -7,9 +7,10 @@ var cake = {
   customer: "Tommy",
   decorate: function(updateFunction) {
     var status = "Decorating with " + this.topping + ". Ready to eat soon!"
+    var context = this
     updateFunction(status)
     setTimeout(function() {
-      updateFunction(serve.apply(this, "Happy Eating!", this.customer))
+      updateFunction(serve.call(context, "Happy Eating!", context.customer))
     }, 2000)
   }
 }
@@ -24,13 +25,14 @@ var pie = {
 }
 
 function makeCake() {
-  var updateCakeStatus;
-  mix(updateCakeStatus)
+  var updateCakeStatus = updateStatus.bind(this)
+  mix.call(cake, updateCakeStatus)
 }
 
 function makePie() {
-  var updatePieStatus;
-  mix(updatePieStatus)
+  var updatePieStatus = updateStatus.bind(this)
+  pie.decorate = cake.decorate.bind(pie)
+  mix.call(pie, updatePieStatus)
 }
 
 function updateStatus(statusText) {
@@ -39,29 +41,39 @@ function updateStatus(statusText) {
 
 function bake(updateFunction) {
   var status = "Baking at " + this.bakeTemp + " for " + this.bakeTime
+  var context = this
   setTimeout(function() {
-    cool(updateFunction)
+    cool.call(context, updateFunction)
   }, 2000)
+  updateFunction(status)
 }
 
 function mix(updateFunction) {
   var status = "Mixing " + this.ingredients.join(", ")
+  var context = this
   setTimeout(function() {
-    bake(updateFunction)
+    bake.call(context, updateFunction)
   }, 2000)
   updateFunction(status)
 }
 
 function cool(updateFunction) {
   var status = "It has to cool! Hands off!"
+  var context = this
   setTimeout(function() {
-    this.decorate(updateFunction)
+    context.decorate(updateFunction)
   }, 2000)
+  updateFunction(status)
 }
 
 function makeDessert() {
   //add code here to decide which make... function to call
   //based on which link was clicked
+  if(this.innerText === 'Make Cake') {
+    makeCake.call(document.getElementById('cake'));
+  } else {
+    makePie.call(document.getElementById('pie'));
+  }
 }
 
 function serve(message, customer) {
