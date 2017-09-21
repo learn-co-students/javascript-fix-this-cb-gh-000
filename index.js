@@ -8,7 +8,7 @@ var cake = {
   decorate: function(updateFunction) {
     var status = "Decorating with " + this.topping + ". Ready to eat soon!"
     updateFunction(status)
-    setTimeout(function() {
+    setTimeout(() => {
       updateFunction(serve.apply(this, "Happy Eating!", this.customer))
     }, 2000)
   }
@@ -29,6 +29,7 @@ function makeCake() {
 }
 
 function makePie() {
+  //cake.decorate.bind(pie);
   var updatePieStatus;
   mix(updatePieStatus)
 }
@@ -62,6 +63,12 @@ function cool(updateFunction) {
 function makeDessert() {
   //add code here to decide which make... function to call
   //based on which link was clicked
+  if (this.text == "Make Cake")
+  {
+    makeCake();
+  } else {
+    makePie();
+  }
 }
 
 function serve(message, customer) {
