@@ -6,13 +6,13 @@ var cake = {
   bakeTime: "45 minutes",
   customer: "Tommy",
   decorate: function(updateFunction) {
-    var status = "Decorating with " + this.topping + ". Ready to eat soon!"
-    updateFunction(status)
-    setTimeout(function() {
-      updateFunction(serve.apply(this, "Happy Eating!", this.customer))
-    }, 2000)
+    var status = "Decorating with " + this.topping + ". Ready to eat soon!";
+    updateFunction(status);
+    setTimeout(() => {
+      updateFunction(serve.apply(this, ["Happy Eating!", this.customer]));
+    }, 2000);
   }
-}
+};
 
 var pie = {
   name: "Apple Pie",
@@ -21,58 +21,68 @@ var pie = {
   bakeTemp: "350 degrees",
   bakeTime: "75 minutes",
   customer: "Tammy"
-}
+};
 
 function makeCake() {
-  var updateCakeStatus;
-  mix(updateCakeStatus)
+  const cakeDiv = document.querySelector("#cake");
+  var updateCakeStatus = updateStatus.bind(cakeDiv);
+  mix.call(cake, updateCakeStatus);
 }
 
 function makePie() {
-  var updatePieStatus;
-  mix(updatePieStatus)
+  pie.decorate = cake.decorate.bind(pie);
+  const pieDiv = document.querySelector("#pie");
+  var updatePieStatus = updateStatus.bind(pieDiv);
+  mix.call(pie, updatePieStatus);
 }
 
 function updateStatus(statusText) {
-  this.getElementsByClassName("status")[0].innerText = statusText
+  this.getElementsByClassName("status")[0].innerText = statusText;
 }
 
 function bake(updateFunction) {
-  var status = "Baking at " + this.bakeTemp + " for " + this.bakeTime
-  setTimeout(function() {
-    cool(updateFunction)
-  }, 2000)
+  var status = "Baking at " + this.bakeTemp + " for " + this.bakeTime;
+  setTimeout(() => {
+    cool.call(this, updateFunction);
+  }, 2000);
+  updateFunction(status);
 }
 
 function mix(updateFunction) {
-  var status = "Mixing " + this.ingredients.join(", ")
-  setTimeout(function() {
-    bake(updateFunction)
-  }, 2000)
-  updateFunction(status)
+  var status = "Mixing " + this.ingredients.join(", ");
+  setTimeout(() => {
+    bake.call(this, updateFunction);
+  }, 2000);
+  updateFunction(status);
 }
 
 function cool(updateFunction) {
-  var status = "It has to cool! Hands off!"
-  setTimeout(function() {
-    this.decorate(updateFunction)
-  }, 2000)
+  var status = "It has to cool! Hands off!";
+  setTimeout(() => {
+    this.decorate.call(this, updateFunction);
+  }, 2000);
+  updateFunction(status);
 }
 
 function makeDessert() {
   //add code here to decide which make... function to call
   //based on which link was clicked
+  if (this.innerText === "Make Cake") {
+    makeCake();
+  } else if (this.innerText === "Make Pie") {
+    makePie();
+  }
 }
 
 function serve(message, customer) {
   //you shouldn't need to alter this function
-  return(customer + ", your " + this.name + " is ready to eat! " + message)
+  return customer + ", your " + this.name + " is ready to eat! " + message;
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
   //you shouldn't need to alter this function
-  var cookLinks = document.getElementsByClassName("js-make")
-  for(var i=0; i<cookLinks.length; i++) {
-    cookLinks[i].addEventListener("click", makeDessert)
+  var cookLinks = document.getElementsByClassName("js-make");
+  for (var i = 0; i < cookLinks.length; i++) {
+    cookLinks[i].addEventListener("click", makeDessert);
   }
 });
