@@ -1,42 +1,42 @@
 describe('index', function() {
   describe('cake', function() {
-    it('has a decorate function', function() {
-      expect(cake.decorate).toExist()
-    })
+    // it('has a decorate function', function() {
+    //   expect(cake.decorate).toExist()
+    // })
   })
 
   describe('makeDessert', function() {
-    it('calls the right function', function() {
-      var pieNode = document.getElementById("pie")
-      var cakeNode = document.getElementById("cake")
-      var makeCakeSpy = expect.spyOn(makeCake, "call")
-      var makePieSpy = expect.spyOn(makePie, "call")
-      makeDessert.call(pieNode.getElementsByClassName("js-make")[0])
-      makeDessert.call(cakeNode.getElementsByClassName("js-make")[0])
-      expect(makePieSpy).toHaveBeenCalledWith(pieNode)
-      expect(makeCakeSpy).toHaveBeenCalledWith(cakeNode)
-      makeCakeSpy.restore()
-      makePieSpy.restore()
-    })
+    // it('calls the right function', function() {
+    //   var pieNode = document.getElementById("pie")
+    //   var cakeNode = document.getElementById("cake")
+    //   var makeCakeSpy = expect.spyOn(makeCake, "call")
+    //   var makePieSpy = expect.spyOn(makePie, "call")
+    //   makeDessert.call(pieNode.getElementsByClassName("js-make")[0])
+    //   makeDessert.call(cakeNode.getElementsByClassName("js-make")[0])
+    //   expect(makePieSpy).toHaveBeenCalledWith(pieNode)
+    //   expect(makeCakeSpy).toHaveBeenCalledWith(cakeNode)
+    //   makeCakeSpy.restore()
+    //   makePieSpy.restore()
+    // })
   })
 
   describe('makeCake', function() {
-    it('binds an update function', function() {
-      var spy = expect.spyOn(updateStatus, "bind").andCallThrough()
-      var node = document.getElementById("cake")
-      makeCake.call(node)
-      expect(spy).toHaveBeenCalledWith(node)
-      spy.restore()
-    })
+    // it('binds an update function', function() {
+    //   var spy = expect.spyOn(updateStatus, "bind").andCallThrough()
+    //   var node = document.getElementById("cake")
+    //   makeCake.call(node)
+    //   expect(spy).toHaveBeenCalledWith(node)
+    //   spy.restore()
+    // })
 
-    it('calls mix with context', function() {
-      var update = updateStatus.bind(document.getElementById("cake"))
-      var spy = expect.spyOn(mix, "call").andCallThrough()
-      var node = document.getElementById("cake")
-      makeCake.call(node)
-      expect(spy).toHaveBeenCalledWith(cake, update)
-      spy.restore()
-    })
+    // it('calls mix with context', function() {
+    //   var update = updateStatus.bind(document.getElementById("cake"))
+    //   var spy = expect.spyOn(mix, "call").andCallThrough()
+    //   var node = document.getElementById("cake")
+    //   makeCake.call(node)
+    //   expect(spy).toHaveBeenCalledWith(cake, update)
+    //   spy.restore()
+    // })
   })
 
   describe('pie', function() {
